@@ -186,7 +186,7 @@ geographic locations.
 
 | Column | Data Type | Description | Role |
 |---|---|---|---|
-| `review_id` | String | Identifier of the review record. | Primary Key Candidate |
+| `review_id` | String | Identifier supplied for the review in the source dataset. It is not unique across all source rows. | Source Identifier |
 | `order_id` | String | Identifier of the order associated with the review. | Foreign Key |
 | `review_score` | Integer | Customer rating assigned to the order, on a scale from 1 to 5. | Measure |
 | `review_comment_title` | String | Optional title written by the customer as part of the review. | Text Attribute |
@@ -196,6 +196,10 @@ geographic locations.
 
 ### Key observations
 
+- `review_id` is not unique in the source table.
+- `review_id + order_id` is unique in the observed dataset and is treated as the candidate composite identifier for review records.
+- `order_id` can occur multiple times because an order can have multiple review records in the source dataset.
+- Complete duplicate rows were not observed during the initial uniqueness assessment.
 - `review_score` provides a direct measure of customer satisfaction.
 - Review text fields can be missing even when a valid review score exists.
 - Reviews can be connected to operational data through `order_id`.
